@@ -78,6 +78,8 @@ public class CandidateService {
             throw new GenericOutputException(MESSAGE_CANDIDATE_NOT_FOUND);
         }
 
+        verifyElectionVote(candidate.getElectionId());
+
         candidate.setElectionId(candidateInput.getElectionId());
         candidate.setNumberElection(candidateInput.getNumberElection());
         candidate.setName(candidateInput.getName());
@@ -96,9 +98,23 @@ public class CandidateService {
             throw new GenericOutputException(MESSAGE_CANDIDATE_NOT_FOUND);
         }
 
+        verifyElectionVote(candidate.getElectionId());
+
         candidateRepository.delete(candidate);
 
         return new GenericOutput("Candidate deleted");
+    }
+
+    private void verifyElectionVote(Long id){
+        try{Long votes = electionClientService.getVoteNumberByElectionId(id);
+            if(votes > 0){
+                throw new GenericOutputException("Esta eleição tem votos");
+            }
+        }catch (FeignException e){
+            if(e.status() == 500){
+                throw new GenericOutputException("Eleiçao invalida");
+            }
+        }
     }
 
     private void validateDuplicate(CandidateInput candidateInput, Long candidateId){
