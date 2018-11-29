@@ -108,11 +108,11 @@ public class CandidateService {
     private void verifyElectionVote(Long id){
         try{Long votes = electionClientService.getVoteNumberByElectionId(id);
             if(votes > 0){
-                throw new GenericOutputException("Esta eleição tem votos");
+                throw new GenericOutputException("This election has votes");
             }
         }catch (FeignException e){
             if(e.status() == 500){
-                throw new GenericOutputException("Eleiçao invalida");
+                throw new GenericOutputException("Election invalid");
             }
         }
     }
