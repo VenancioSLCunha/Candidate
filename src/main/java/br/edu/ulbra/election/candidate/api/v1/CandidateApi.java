@@ -27,6 +27,18 @@ public class CandidateApi {
         return candidateService.getAll();
     }
 
+    @GetMapping("/election/{electionId}")
+    @ApiOperation(value = "Get candidates List by Election")
+    public List<CandidateOutput> getByElection(@PathVariable Long electionId){
+        return candidateService.getByElection(electionId);
+    }
+
+    @GetMapping("/party/{partyId}")
+    @ApiOperation(value = "Get candidates List by Party")
+    public List<CandidateOutput> getByParty(@PathVariable Long partyId){
+        return candidateService.getByParty(partyId);
+    }
+
     @GetMapping("/{candidateId}")
     @ApiOperation(value = "Get candidate by Id")
     public CandidateOutput getById(@PathVariable Long candidateId){
@@ -50,4 +62,12 @@ public class CandidateApi {
     public GenericOutput delete(@PathVariable Long candidateId){
         return candidateService.delete(candidateId);
     }
+
+    @GetMapping("/getByNumberAndElection/{electionId}/{candidateNumber}")
+    @ApiOperation(value = "Get candidate by Election and Candidate Number")
+    public CandidateOutput getByNumberAndElection(@PathVariable(name = "electionId") Long electionId, @PathVariable(name = "candidateNumber") Long candidateNumber){
+        return candidateService.getByNumberAndElection(electionId, candidateNumber);
+    }
+
+
 }
